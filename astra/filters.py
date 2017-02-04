@@ -1,5 +1,15 @@
 class _Attr:
     def __getattr__(self, name):
+        aliases = {
+            "name": "EventName",
+            "type": "EventType",
+            "start": "StartDate",
+            "end": "EndDate"
+        }
+
+        if name in aliases:
+            name = aliases[name]
+
         return FilterAttr(name)
 
 Attr = _Attr()
@@ -22,6 +32,9 @@ class FilterAttr:
 
     def __eq__(self, other):
         return Triple(self.name, "==", other)
+
+    def __pow__(self, other):
+        return Triple(self.name, "?=", "%{}%".format(other))
 
 class Expr:
     def __init__(self, a, b):
@@ -50,3 +63,11 @@ class Triple(Expr):
 
     def _expr(self):
         return "(" + self.key + self.condition + self.value + ")"
+
+### Standard filters
+
+from datetime import datetime
+
+def today():
+    date_str = datetime.now().strftime("%Y-%m-%dT00:00:00")
+    return (Attr.StartDate >= date_str) & (Attr.EndDate <= date_str)
