@@ -8,6 +8,9 @@ class Client:
         self.base_url = base.strip('/')
         self.start_url = base + '/Portal/GuestPortal.aspx'
         self.event_url = base + '/~api/search/eventMeeting'
+        self.refresh()
+
+    def refresh(self):
         self.session = requests.Session()
         self.session.get(self.start_url)
 
@@ -20,4 +23,9 @@ class Client:
 
         from . import event
         data = [event.Event(i) for i in result.json()["data"]]
-        return data
+        result = []
+        for i in data:
+            if i not in result:
+                result.append(i)
+
+        return result

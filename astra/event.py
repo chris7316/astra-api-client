@@ -25,6 +25,12 @@ class Event:
         self.location = self.fields['BuildingRoom']
         self.description = self.fields['EventDescription']
 
+    def __eq__(self, other):
+        return repr(self) == repr(other)
+
+    def __hash__(self):
+        return hash(repr(self))
+
     def __repr__(self):
         return "{} ({}) from {} to {} in {}".format(self.name, self.type,
                 self.begin, self.end, self.location)
