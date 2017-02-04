@@ -7,7 +7,7 @@ class Client:
     def __init__(self, base):
         self.base_url = base.strip('/')
         self.start_url = base + '/Portal/GuestPortal.aspx'
-        self.event_url = base + '/~api/search/event'
+        self.event_url = base + '/~api/search/eventMeeting'
         self.session = requests.Session()
         self.session.get(self.start_url)
 
